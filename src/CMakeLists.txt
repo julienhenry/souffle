@@ -17,6 +17,7 @@ set(SOUFFLE_SOURCES
     ast/BranchType.cpp
     ast/BranchInit.cpp
     ast/Clause.cpp
+    ast/SubsumptiveClause.cpp
     ast/Component.cpp
     ast/ComponentInit.cpp
     ast/ComponentType.cpp
@@ -54,7 +55,6 @@ set(SOUFFLE_SOURCES
     ast/analysis/Functor.cpp
     ast/analysis/Ground.cpp
     ast/analysis/IOType.cpp
-    ast/analysis/PolymorphicObjects.cpp
     ast/analysis/PrecedenceGraph.cpp
     ast/analysis/ProfileUse.cpp
     ast/analysis/RecursiveClauses.cpp
@@ -62,12 +62,15 @@ set(SOUFFLE_SOURCES
     ast/analysis/RelationDetailCache.cpp
     ast/analysis/RelationSchedule.cpp
     ast/analysis/SCCGraph.cpp
-    ast/analysis/SumTypeBranches.cpp
     ast/analysis/TopologicallySortedSCCGraph.cpp
-    ast/analysis/Type.cpp
-    ast/analysis/TypeConstraints.cpp
-    ast/analysis/TypeSystem.cpp
-    ast/analysis/TypeEnvironment.cpp
+    ast/analysis/typesystem/PolymorphicObjects.cpp
+    ast/analysis/typesystem/SumTypeBranches.cpp
+    ast/analysis/typesystem/Type.cpp
+    ast/analysis/typesystem/TypeConstraints.cpp
+    ast/analysis/typesystem/TypeConstrainsAnalysis.cpp
+    ast/analysis/typesystem/TypeConstrainsAnalysis.h
+    ast/analysis/typesystem/TypeSystem.cpp
+    ast/analysis/typesystem/TypeEnvironment.cpp
     ast/transform/AddNullariesToAtomlessAggregates.cpp
     ast/transform/ComponentChecker.cpp
     ast/transform/ComponentInstantiation.cpp

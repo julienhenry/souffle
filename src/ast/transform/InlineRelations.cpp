@@ -41,7 +41,7 @@
 #include "ast/UnnamedVariable.h"
 #include "ast/UserDefinedFunctor.h"
 #include "ast/Variable.h"
-#include "ast/analysis/PolymorphicObjects.h"
+#include "ast/analysis/typesystem/PolymorphicObjects.h"
 #include "ast/utility/Utils.h"
 #include "ast/utility/Visitor.h"
 #include "souffle/BinaryConstraintOps.h"
@@ -100,7 +100,7 @@ bool normaliseInlinedHeads(Program& program) {
         for (Clause* clause : getClauses(program, *rel)) {
             // Set up the new clause with an empty body and no arguments in the head
             auto newClause =
-                    mk<Clause>(clause->getHead()->getQualifiedName(), clause->isLeq(), clause->getSrcLoc());
+                    mk<Clause>(clause->getHead()->getQualifiedName(), clause->getSrcLoc());
             newClause->setBodyLiterals(clone(clause->getBodyLiterals()));
             auto clauseHead = newClause->getHead();
 
@@ -933,7 +933,7 @@ std::vector<Clause*> getInlinedClause(Program& program, const Clause& clause) {
 
         // Produce the new clauses with the replacement head atoms
         for (Atom* newHead : headVersions.getVector()) {
-            auto newClause = mk<Clause>(Own<Atom>(newHead), clause.isLeq(), clause.getSrcLoc());
+            auto newClause = mk<Clause>(Own<Atom>(newHead), clause.getSrcLoc());
             newClause->setBodyLiterals(clone(clause.getBodyLiterals()));
 
             // FIXME: tomp - hack - this should be managed
@@ -966,7 +966,7 @@ std::vector<Clause*> getInlinedClause(Program& program, const Clause& clause) {
                 std::vector<std::vector<Literal*>> bodyVersions = litVersions.getVector();
 
                 // Create the base clause with the current literal removed
-                auto baseClause = cloneHead(clause);
+                auto baseClause = clause.cloneHead();
 
                 for (std::vector<Literal*> const& body : bodyVersions) {
                     auto replacementClause = clone(baseClause);

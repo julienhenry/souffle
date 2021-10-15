@@ -19,17 +19,18 @@
 #include "ast/Directive.h"
 #include "ast/QualifiedName.h"
 #include "ast/TranslationUnit.h"
+#include "ast/SubsumptiveClause.h"
 #include "ast/analysis/Functor.h"
 #include "ast/analysis/IOType.h"
-#include "ast/analysis/PolymorphicObjects.h"
 #include "ast/analysis/RecursiveClauses.h"
 #include "ast/analysis/RelationDetailCache.h"
 #include "ast/analysis/RelationSchedule.h"
 #include "ast/analysis/SCCGraph.h"
-#include "ast/analysis/SumTypeBranches.h"
-#include "ast/analysis/Type.h"
-#include "ast/analysis/TypeEnvironment.h"
-#include "ast/analysis/TypeSystem.h"
+#include "ast/analysis/typesystem/PolymorphicObjects.h"
+#include "ast/analysis/typesystem/SumTypeBranches.h"
+#include "ast/analysis/typesystem/Type.h"
+#include "ast/analysis/typesystem/TypeEnvironment.h"
+#include "ast/analysis/typesystem/TypeSystem.h"
 #include "ast/utility/SipsMetric.h"
 #include "ast/utility/Utils.h"
 #include "ast2ram/ClauseTranslator.h"
@@ -157,7 +158,7 @@ std::vector<ast::Clause*> TranslatorContext::getClauses(const ast::QualifiedName
 
 bool TranslatorContext::hasLeq(const ast::QualifiedName& name) const {
     for (const auto* clause : getClauses(name)) {
-        if (clause->isLeq()) {
+        if (isA<ast::SubsumptiveClause>(clause)) {
             return true;
         }
     }
