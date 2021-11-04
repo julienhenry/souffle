@@ -283,18 +283,18 @@ Own<ram::Statement> UnitTranslator::translateSubsumptiveRecursiveClauses(
 
     VecOwn<ram::Statement> code;
 
+    std::string mainRelation = getConcreteRelationName(rel->getQualifiedName());
+    std::string newRelation = getNewRelationName(rel->getQualifiedName());
+    std::string deltaRelation = getDeltaRelationName(rel->getQualifiedName());
+    std::string rejectRelation = getRejectRelationName(rel->getQualifiedName());
+    std::string deleteRelation = getDeleteRelationName(rel->getQualifiedName());
+
     // Translate subsumptive clauses
     for (const auto* clause : context->getClauses(rel->getQualifiedName())) {
         // Skip non-subsumptive clauses
         if (!isA<ast::SubsumptiveClause>(clause)) {
             continue;
         }
-
-        std::string mainRelation = getConcreteRelationName(rel->getQualifiedName());
-        std::string newRelation = getNewRelationName(rel->getQualifiedName());
-        std::string deltaRelation = getDeltaRelationName(rel->getQualifiedName());
-        std::string rejectRelation = getRejectRelationName(rel->getQualifiedName());
-        std::string deleteRelation = getDeleteRelationName(rel->getQualifiedName());
 
         // old delta relation can be cleared
         appendStmt(code, mk<ram::Clear>(deltaRelation));
@@ -309,15 +309,18 @@ Own<ram::Statement> UnitTranslator::translateSubsumptiveRecursiveClauses(
             appendStmt(code, context->translateRecursiveClause(*clause, scc, version, SubsumeRNC));
         }
 
+        // compute delete set,  remove tuples from R, and clear delete set
+        for (std::size_t version = 0; version < sccAtoms.size(); version++) {
+            appendStmt(code, context->translateRecursiveClause(*clause, scc, version, SubsumeDCD));
+        }
+    }
+
+    if (context->hasSubsumptiveClause(rel->getQualifiedName())) {
         // compute new delta set, i.e., deltaR = newR \ rejectR
         appendStmt(code, generateMergeRelationsWithFilter(rel, deltaRelation, newRelation, rejectRelation));
         appendStmt(code, mk<ram::Clear>(rejectRelation));
         appendStmt(code, mk<ram::Clear>(newRelation));
 
-        // compute delete set,  remove tuples from R, and clear delete set
-        for (std::size_t version = 0; version < sccAtoms.size(); version++) {
-            appendStmt(code, context->translateRecursiveClause(*clause, scc, version, SubsumeDCD));
-        }
         appendStmt(code, generateEraseTuples(rel, mainRelation, deleteRelation));
         appendStmt(code, mk<ram::Clear>(deleteRelation));
     }
