@@ -296,9 +296,6 @@ Own<ram::Statement> UnitTranslator::translateSubsumptiveRecursiveClauses(
             continue;
         }
 
-        // old delta relation can be cleared
-        appendStmt(code, mk<ram::Clear>(deltaRelation));
-
         // compute reject set using the subsumptive clause
         const auto& sccAtoms = getSccAtoms(clause, scc);
         for (std::size_t version = 0; version < sccAtoms.size(); version++) {
@@ -314,6 +311,9 @@ Own<ram::Statement> UnitTranslator::translateSubsumptiveRecursiveClauses(
             appendStmt(code, context->translateRecursiveClause(*clause, scc, version, SubsumeDCD));
         }
     }
+
+    // old delta relation can be cleared
+    appendStmt(code, mk<ram::Clear>(deltaRelation));
 
     if (context->hasSubsumptiveClause(rel->getQualifiedName())) {
         // compute new delta set, i.e., deltaR = newR \ rejectR
