@@ -41,4 +41,8 @@ if stdout:
 if stderr:
     stderr.close()
 
+if status.returncode != 0:
+    stderr = open(args.err_file, "r")
+    print(stderr.read())
+
 os.sys.exit(status.returncode)
