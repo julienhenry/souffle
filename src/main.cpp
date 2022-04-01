@@ -203,9 +203,12 @@ void compileToBinary(const std::string& command, std::vector<fs::path>& sourceFi
         argv.push_back(tfm::format("-l%s", library));
     }
 
+    std::cerr << "source files : ";
     for (fs::path srcFile : sourceFilenames) {
         argv.push_back(srcFile.c_str());
+        std::cerr << " " << srcFile.c_str();
     }
+    std::cerr << std::endl;
 
 #if defined(_MSC_VER)
     const char* interpreter = "python";

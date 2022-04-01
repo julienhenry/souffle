@@ -206,6 +206,8 @@ else:
     cmd.extend(list(map(lambda libname: LIBNAME_FMT.format(libname), args.lib_names)))
 
     cmd = " ".join(cmd)
+    sys.stderr.write(cmd + "\n")
+    sys.stdout.write(cmd + "\n")
 
     if args.verbose:
         sys.stderr.write(cmd + "\n")
