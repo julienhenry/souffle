@@ -121,6 +121,7 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include <fstream>
 
 namespace fs = std::filesystem;
 
@@ -207,6 +208,23 @@ void compileToBinary(const std::string& command, std::vector<fs::path>& sourceFi
     for (fs::path srcFile : sourceFilenames) {
         argv.push_back(srcFile.c_str());
         std::cerr << " " << srcFile.c_str();
+    }
+    std::cerr << std::endl;
+    std::cerr << "source files : ";
+    for (fs::path srcFile : sourceFilenames) {
+        if (srcFile.string().find("Stratum_B_1f366d600ff54502") != std::string::npos) {
+            std::cerr << "############## START " << srcFile << "################";
+            std::ifstream f(srcFile.c_str());
+            if (f.is_open())
+                std::cerr << f.rdbuf();
+            std::cerr << "############## END " << srcFile << "################";
+            fs::path hFile = srcFile.replace_extension(".hpp");
+            std::cerr << "############## START " << hFile << "################";
+            std::ifstream fh(hFile.c_str());
+            if (fh.is_open())
+                std::cerr << fh.rdbuf();
+            std::cerr << "############## END " << hFile << "################";
+        }
     }
     std::cerr << std::endl;
 
