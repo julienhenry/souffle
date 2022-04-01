@@ -43,6 +43,7 @@ if stderr:
 
 if status.returncode != 0:
     stderr = open(args.err_file, "r")
+    print("When running " + str(args.command) + " " + str(args.arguments))
     print(stderr.read())
 
 os.sys.exit(status.returncode)

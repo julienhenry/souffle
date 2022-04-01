@@ -213,7 +213,7 @@ function(SOUFFLE_RUN_TEST_HELPER)
                                        FIXTURE_NAME ${FIXTURE_NAME}
                                        TEST_LABELS ${TEST_LABELS})
 
-    set(SOUFFLE_PARAMS "-D" "." "-F" "${FACTS_DIR}")
+    set(SOUFFLE_PARAMS "-D" "." "-F" "${FACTS_DIR}" "-v")
     list(PREPEND SOUFFLE_PARAMS ${EXTRA_FLAGS})
 
     if (OPENMP_FOUND)
