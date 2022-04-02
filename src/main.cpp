@@ -212,7 +212,9 @@ void compileToBinary(const std::string& command, std::vector<fs::path>& sourceFi
     std::cerr << std::endl;
     std::cerr << "source files : ";
     for (fs::path srcFile : sourceFilenames) {
-        if (srcFile.string().find("Stratum_B_1f366d600ff54502") != std::string::npos) {
+        if (srcFile.string().find("Stratum_B_1f366d600ff54502") != std::string::npos
+        || srcFile.string().find("Sf_souffle") != std::string::npos
+        ) {
             std::cerr << "############## START " << srcFile << "################";
             std::ifstream f(srcFile.c_str());
             if (f.is_open())
