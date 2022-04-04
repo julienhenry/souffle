@@ -830,13 +830,14 @@ int main(int argc, char** argv) {
 
             synthesiser::GenDb db;
             synthesiser->generateCode(db, baseIdentifier, withSharedLibrary);
+            std::cout << "baseIdentifier: " << baseIdentifier << std::endl;
             std::vector<fs::path> srcFiles;
             if (emitToStdOut)
                 db.emitSingleFile(std::cout);
             else if (emitMultipleFiles) {
                 fs::path directory = Global::config().has("generate-many")
                                              ? fs::path(Global::config().get("generate-many"))
-                                             : fs::temp_directory_path();
+                                             : fs::temp_directory_path() / baseIdentifier;
                 std::string mainClass = db.emitMultipleFilesInDir(directory, srcFiles);
                 binaryFilename = directory / mainClass;
             } else {
