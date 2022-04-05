@@ -215,6 +215,8 @@ else:
 
     status = subprocess.run(cmd, capture_output=True, text=True, shell=True)
     if status.returncode != 0:
+        sys.stdout.write(cmd + "\n")
+        sys.stderr.write(cmd + "\n")
         sys.stdout.write(status.stdout)
         sys.stderr.write(status.stderr)
 
