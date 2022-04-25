@@ -207,6 +207,9 @@ else:
 
     cmd = " ".join(cmd)
 
+    sys.stderr.write("souffle-compile: exe: " + str(exepath) + "\n")
+    sys.stderr.write("souffle-compile: cmd: " + str(cmd) + "\n")
+
     if args.verbose:
         sys.stderr.write(cmd + "\n")
 

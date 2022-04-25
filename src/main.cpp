@@ -818,6 +818,7 @@ int main(int argc, char** argv) {
                                              : fs::temp_directory_path() / baseIdentifier;
                 std::string mainClass = db.emitMultipleFilesInDir(directory, srcFiles);
                 binaryFilename = (directory / fs::path(mainClass)).string();
+                std::cerr << "binaryFilename is " << binaryFilename << std::endl;
             } else {
                 std::string sourceFilename = baseFilename + ".cpp";
                 std::ofstream os{sourceFilename};
