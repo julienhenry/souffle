@@ -34,9 +34,9 @@ runs:
     - name: ctest
       run: |
         TESTS_TO_RUN=$(
-        echo "$(ctest --test-dir build --show-only=json-v1 | jq '.tests | length') ${{ inputs.n-chunks }} ${{ inputs.chunk }}" |
+        echo "$(ctest -R "semantic/lrg_attr_id_C" --test-dir build --show-only=json-v1 | jq '.tests | length') ${{ inputs.n-chunks }} ${{ inputs.chunk }}" |
         sh/chunkify.py
         )
         echo "[Debug] Running tests in range ${TESTS_TO_RUN}."
-        ctest --test-dir build -I "${TESTS_TO_RUN}" --output-on-failure --progress -j${JOBS}
+        ctest -R "semantic/lrg_attr_id_C" --test-dir build -I "${TESTS_TO_RUN}" --output-on-failure --progress -j${JOBS}
       shell: bash
